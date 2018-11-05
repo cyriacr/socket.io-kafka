@@ -318,7 +318,7 @@ function adapter(uri, options) {
    */
 
     Kafka.prototype.addAll = function (id, rooms, fn) {
-
+        console.log('rooms', rooms)
         var channel,
             self = this;
 

@@ -324,7 +324,7 @@ function adapter(uri, options) {
 
         this.sids[id] = this.sids[id] || {};
 
-        async.forEach(Object.keys(rooms), function (room) {
+        async.forEach(rooms, function (room) {
             self.sids[id][room] = true;
             self.rooms[room] = self.rooms[room] || {};
             self.rooms[room][id] = true;

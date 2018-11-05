@@ -318,7 +318,7 @@ function adapter(uri, options) {
    */
 
     Kafka.prototype.addAll = function (id, rooms, fn) {
-        console.log('rooms', rooms)
+        console.log('rooms', rooms);
         var channel,
             self = this;
 
@@ -331,11 +331,12 @@ function adapter(uri, options) {
             channel = self.safeTopicName(self.mainTopic) + room;
         
             /** create the topic as producer and subscribe as a consumer */
+            console.log(room, channel);
             self.createTopic(channel, function (err, data) {
                 if (!err) {
-                    self.subscribe(channel);
+                    return self.subscribe(channel);
                 }
-            })
+            });
         }, function (err) {
             if (err) {
                 self.emit('error', err);

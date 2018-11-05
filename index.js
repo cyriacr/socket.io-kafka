@@ -307,7 +307,44 @@ function adapter(uri, options) {
         });
 
     };
-    
+
+  /**
+   * Subscribe client to rooms messages.
+   *
+   * @param {String} client id
+   * @param {String} rooms
+   * @param {Function} callback (optional)
+   * @api public
+   */
+
+    Kafka.prototype.addAll = function (id, rooms, fn) {
+
+        var channel,
+            self = this;
+
+        this.sids[id] = this.sids[id] || {};
+        for (let room in rooms) {
+            this.sids[id][room] = true;
+            this.rooms[room] = this.rooms[room] || {};
+            this.rooms[room][id] = true;
+            channel = self.safeTopicName(self.mainTopic) + room;
+        
+            /** create the topic as producer and subscribe as a consumer */
+            self.createTopic(channel, function (err, data) {
+                if (!err) {
+                    self.subscribe(channel, function (err) {
+                        if (err) {
+                            if (fn) fn(err);
+                            return;
+                        }
+                        if (fn) fn(null);
+                    });
+                }
+        
+            });
+        }
+    };
+
     /**
    * Unsubscribe client from room messages.
    *

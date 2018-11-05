@@ -173,6 +173,8 @@ function adapter(uri, options) {
                     next && next(err, data);
                 }, 500);
 
+            }, function (err) {
+                console.log(err);
             });
         }
     };

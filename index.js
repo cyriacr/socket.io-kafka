@@ -323,7 +323,8 @@ function adapter(uri, options) {
             self = this;
 
         this.sids[id] = this.sids[id] || {};
-        for (let room in rooms) {
+
+        async.forEach(Object.keys(rooms), function (room, next) {
             this.sids[id][room] = true;
             this.rooms[room] = this.rooms[room] || {};
             this.rooms[room][id] = true;
@@ -340,9 +341,16 @@ function adapter(uri, options) {
                         if (fn) fn(null);
                     });
                 }
-        
-            });
-        }
+                next();
+            })
+        }, function (err) {
+            if (err) {
+                self.emit('error', err);
+                if (fn) fn(err);
+                return;
+            }
+            if (fn) fn(null);
+        });
     };
 
     /**

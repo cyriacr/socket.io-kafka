@@ -324,7 +324,7 @@ function adapter(uri, options) {
 
         this.sids[id] = this.sids[id] || {};
 
-        async.forEach(Object.keys(rooms), function (room, next) {
+        async.forEach(Object.keys(rooms), function (room) {
             self.sids[id][room] = true;
             self.rooms[room] = self.rooms[room] || {};
             self.rooms[room][id] = true;
@@ -333,15 +333,8 @@ function adapter(uri, options) {
             /** create the topic as producer and subscribe as a consumer */
             self.createTopic(channel, function (err, data) {
                 if (!err) {
-                    self.subscribe(channel, function (err) {
-                        if (err) {
-                            if (fn) fn(err);
-                            return;
-                        }
-                        if (fn) fn(null);
-                    });
+                    self.subscribe(channel);
                 }
-                next();
             })
         }, function (err) {
             if (err) {

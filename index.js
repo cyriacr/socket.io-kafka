@@ -325,9 +325,9 @@ function adapter(uri, options) {
         this.sids[id] = this.sids[id] || {};
 
         async.forEach(Object.keys(rooms), function (room, next) {
-            this.sids[id][room] = true;
-            this.rooms[room] = this.rooms[room] || {};
-            this.rooms[room][id] = true;
+            self.sids[id][room] = true;
+            self.rooms[room] = self.rooms[room] || {};
+            self.rooms[room][id] = true;
             channel = self.safeTopicName(self.mainTopic) + room;
         
             /** create the topic as producer and subscribe as a consumer */
